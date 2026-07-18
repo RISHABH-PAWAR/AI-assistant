@@ -1,0 +1,387 @@
+/* ============================================================
+   Warm Clinical — chat experience styles.
+   References design tokens only (see tokens.css). No hard-coded hex.
+   ============================================================ */
+
+.app {
+  position: relative;
+  min-height: 100%;
+  background: var(--bg-base);
+  overflow: hidden;
+}
+
+/* Soft peach glow behind the top of the app. */
+.app-glow {
+  position: absolute;
+  inset: 0;
+  background: var(--bg-glow);
+  pointer-events: none;
+}
+
+.chat-shell {
+  position: relative;
+  z-index: 1;
+  width: min(760px, 100%);
+  height: 100dvh;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  padding: 0 var(--sp-4);
+}
+
+/* ---------- Header ---------- */
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--sp-4) var(--sp-2) var(--sp-3);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  background: color-mix(in srgb, var(--bg-base) 82%, transparent);
+  backdrop-filter: blur(10px);
+  z-index: 2;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+}
+
+.brand-name {
+  font-family: var(--font-display);
+  font-weight: var(--fw-semibold);
+  font-size: 1.05rem;
+  letter-spacing: -0.01em;
+  color: var(--text-ink);
+}
+
+.brand-sub {
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: 6px 12px;
+  font-size: 0.8125rem;
+  font-weight: var(--fw-medium);
+  color: var(--text-slate);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-pill);
+  box-shadow: var(--shadow-sm);
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: var(--r-pill);
+  background: var(--brand-coral);
+  box-shadow: 0 0 0 0 color-mix(in srgb, var(--brand-coral) 55%, transparent);
+  animation: status-pulse 2.4s var(--ease-standard) infinite;
+}
+
+@keyframes status-pulse {
+  0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--brand-coral) 45%, transparent); }
+  70% { box-shadow: 0 0 0 6px color-mix(in srgb, var(--brand-coral) 0%, transparent); }
+  100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--brand-coral) 0%, transparent); }
+}
+
+/* ---------- Messages ---------- */
+.messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--sp-6) 0 var(--sp-4);
+  scroll-behavior: smooth;
+}
+
+.messages-inner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+.row {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--sp-3);
+}
+
+.row-user {
+  justify-content: flex-end;
+}
+
+.row-assistant {
+  justify-content: flex-start;
+}
+
+.avatar {
+  flex: 0 0 auto;
+  width: 30px;
+  height: 30px;
+  filter: drop-shadow(0 2px 6px rgba(240, 85, 61, 0.18));
+}
+
+.assistant-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-width: 78%;
+}
+
+/* ---------- Bubbles ---------- */
+.bubble {
+  max-width: 78%;
+  padding: var(--sp-3) var(--sp-4);
+  font-size: 0.975rem;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  animation: msg-enter var(--dur-base) var(--ease-out-soft) both;
+}
+
+.bubble-assistant {
+  background: var(--surface);
+  color: var(--text-ink);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg) var(--r-lg) var(--r-lg) var(--r-sm);
+  box-shadow: var(--shadow-sm);
+  max-width: 100%;
+}
+
+.bubble-user {
+  background: var(--brand-gradient);
+  color: var(--text-on-accent);
+  border-radius: var(--r-lg) var(--r-lg) var(--r-sm) var(--r-lg);
+  box-shadow: var(--shadow-glow);
+}
+
+.bubble-error {
+  background: var(--danger-soft);
+  border-color: color-mix(in srgb, var(--danger) 30%, var(--border));
+  color: var(--danger);
+}
+
+/* ---------- Markdown inside assistant bubbles ---------- */
+.markdown > :first-child {
+  margin-top: 0;
+}
+.markdown > :last-child {
+  margin-bottom: 0;
+}
+.markdown p {
+  margin: 0 0 var(--sp-2);
+}
+.markdown ul,
+.markdown ol {
+  margin: var(--sp-2) 0;
+  padding-left: 1.25rem;
+}
+.markdown li {
+  margin: 2px 0;
+}
+.markdown strong {
+  font-weight: var(--fw-semibold);
+  color: var(--text-ink);
+}
+.markdown code {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 0.9em;
+  background: var(--surface-subtle);
+  padding: 1px 5px;
+  border-radius: var(--r-xs);
+}
+
+.retry-btn {
+  display: inline-block;
+  margin-top: var(--sp-2);
+  padding: 6px 14px;
+  font-size: 0.8125rem;
+  font-weight: var(--fw-medium);
+  color: var(--text-on-accent);
+  background: var(--brand-coral);
+  border-radius: var(--r-pill);
+  transition: background var(--dur-fast) var(--ease-standard),
+    transform var(--dur-fast) var(--ease-spring);
+}
+
+.retry-btn:hover {
+  background: var(--brand-coral-hover);
+}
+
+.retry-btn:active {
+  transform: scale(0.96);
+}
+
+/* ---------- Tool trace ---------- */
+.trace {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding-left: var(--sp-2);
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  animation: msg-enter var(--dur-base) var(--ease-out-soft) both;
+}
+
+.trace svg {
+  color: var(--success);
+}
+
+.trace-warn svg {
+  color: var(--danger);
+}
+
+/* ---------- Typing indicator ---------- */
+.bubble.typing {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 14px var(--sp-4);
+}
+
+.bubble.typing .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--r-pill);
+  background: var(--text-muted);
+  animation: typing-pulse 1.2s var(--ease-standard) infinite;
+}
+
+.bubble.typing .dot:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.bubble.typing .dot:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+/* ---------- Suggestion chips ---------- */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+  padding-left: 42px; /* align under assistant bubble, past the avatar */
+  animation: fade-up var(--dur-slow) var(--ease-out-soft) both;
+  animation-delay: 0.1s;
+}
+
+.chip {
+  padding: 9px 15px;
+  font-size: 0.875rem;
+  color: var(--text-slate);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-pill);
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--dur-fast) var(--ease-out-soft),
+    box-shadow var(--dur-fast) var(--ease-standard),
+    border-color var(--dur-fast) var(--ease-standard),
+    color var(--dur-fast) var(--ease-standard);
+}
+
+.chip:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: color-mix(in srgb, var(--brand-coral) 40%, var(--border));
+  color: var(--brand-coral);
+}
+
+/* ---------- Composer ---------- */
+.composer {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--sp-3);
+  padding: var(--sp-3);
+  margin-bottom: var(--sp-2);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-md);
+  transition: border-color var(--dur-fast) var(--ease-standard),
+    box-shadow var(--dur-fast) var(--ease-standard);
+}
+
+.composer:focus-within {
+  border-color: color-mix(in srgb, var(--brand-coral) 45%, var(--border));
+  box-shadow: var(--shadow-glow);
+}
+
+.composer-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  resize: none;
+  background: transparent;
+  color: var(--text-ink);
+  font-size: 0.975rem;
+  line-height: 1.5;
+  max-height: 140px;
+  padding: 8px 6px;
+}
+
+.composer-input::placeholder {
+  color: var(--text-muted);
+}
+
+.composer-input:disabled {
+  opacity: 0.6;
+}
+
+.send-btn {
+  flex: 0 0 auto;
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  color: var(--text-on-accent);
+  background: var(--brand-gradient);
+  border-radius: var(--r-pill);
+  box-shadow: var(--shadow-glow);
+  transition: transform var(--dur-fast) var(--ease-spring),
+    opacity var(--dur-fast) var(--ease-standard),
+    filter var(--dur-fast) var(--ease-standard);
+}
+
+.send-btn:hover:not(:disabled) {
+  filter: brightness(1.05);
+}
+
+.send-btn:active:not(:disabled) {
+  transform: scale(0.92);
+}
+
+.send-btn:disabled {
+  opacity: 0.45;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+/* ---------- Disclaimer ---------- */
+.disclaimer {
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  padding: 0 0 var(--sp-3);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 560px) {
+  .assistant-stack,
+  .bubble {
+    max-width: 88%;
+  }
+  .chips {
+    padding-left: 0;
+  }
+}

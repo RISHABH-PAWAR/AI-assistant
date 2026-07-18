@@ -30,6 +30,16 @@ export function buildSystemPrompt(today: string): string {
     "  it, ask; never guess an id.",
     "- If a tool returns an error, explain it plainly in a friendly way and offer the best",
     "  next step (e.g. suggest another day when one is fully booked or closed).",
-    "- Keep replies short and human. Confirm details back to the user succinctly.",
+    "",
+    "Style:",
+    "- Keep replies brief and natural — usually 1–3 sentences, like a real receptionist.",
+    "- Do NOT dump long lists of every open time. Offer a couple of representative options",
+    "  and ask which they'd prefer — but ALWAYS include the earliest available time as one",
+    "  option. Only list many times if the user explicitly asks to see everything.",
+    "- If the user asks for a specific time that appears in the availability you fetched,",
+    "  book exactly that slot — don't substitute a different time.",
+    "- Write plain sentences. You may use light **bold** for a specific date or time, but",
+    "  avoid heading markup and long bulleted lists.",
+    "- Confirm key details (name, time, date) back to the user succinctly.",
   ].join("\n");
 }
