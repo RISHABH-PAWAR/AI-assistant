@@ -7,7 +7,8 @@ export default defineConfig({
     // Keep test output clean; individual tests can still assert on logger calls via spies.
     env: { LOG_LEVEL: "error", NODE_ENV: "test" },
     include: ["src/**/*.test.ts"],
-    exclude: ["**/*.eval.test.ts", "node_modules/**"],
+    // Eval specs are included but self-skip unless RUN_EVAL=1 (see eval.eval.test.ts).
+    exclude: ["node_modules/**"],
     coverage: {
       provider: "v8",
       reporter: ["text", "html"],

@@ -32,7 +32,10 @@ export type ToolErrorCode =
   | "SLOT_TAKEN" // slot already booked by someone else
   | "INVALID_NAME" // missing/blank patient name
   | "INVALID_PHONE" // missing/malformed phone
-  | "NOT_FOUND"; // unknown appointmentId on cancel
+  | "NOT_FOUND" // unknown appointmentId on cancel
+  // Agent/dispatch-layer errors (not produced by domain handlers):
+  | "BAD_ARGS" // tool-call arguments weren't valid JSON / wrong shape
+  | "UNKNOWN_TOOL"; // model called a tool that doesn't exist
 
 export type ToolResult<T> =
   | { ok: true; data: T }
