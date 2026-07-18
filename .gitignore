@@ -1,7 +1,14 @@
 node_modules/
 dist/
 build/
+coverage/
 .env
 .env.local
 *.log
 .DS_Store
+
+# test / tooling artifacts
+playwright-report/
+test-results/
+.vite/
+*.tsbuildinfo

@@ -1,0 +1,49 @@
+@import "./tokens.css";
+
+/* ---- Reset ---- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--text-ink);
+  background: var(--bg-base);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  line-height: var(--lh-body, 1.6);
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+input,
+textarea {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--brand-coral);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: var(--brand-coral-soft);
+  color: var(--text-ink);
+}
