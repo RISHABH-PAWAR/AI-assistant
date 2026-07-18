@@ -35,8 +35,8 @@ The source of truth. **No LLM yet** — this is pure and must be bullet-proof.
 
 - `domain/types.ts` — `Slot`, `Appointment`, `ToolResult`, `ToolErrorCode`.
 - `domain/store.ts` — repo interface + in-memory impl + `seed(today)`:
-  09:00–16:30 / 30 min (16 slots/day) for today..+6; today & day+3 fully booked;
-  weekends closed; others ~30% booked; **deterministic** from injected `today`.
+  09:00–16:30 / 30 min (16 slots/day) for today..+6; weekends closed; 1st & 4th
+  weekdays fully booked; others ~31% scattered; **deterministic** from injected `today`.
 - `domain/slots.ts` — `getAvailableSlots` (`BAD_DATE`/`OUT_OF_RANGE`/`NO_SLOTS`).
 - `domain/booking.ts` — `bookAppointment` (idempotent, full validation ladder) +
   `cancelAppointment`.

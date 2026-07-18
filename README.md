@@ -74,17 +74,27 @@ cp .env.example .env
 # open .env, paste OPENAI_API_KEY and GROQ_API_KEY (either alone also works)
 ```
 
-### 2. Backend
+### 2. Install everything
 ```bash
-cd server && npm install && npm run dev   # http://localhost:8787
+npm run install:all        # installs both server/ and web/
 ```
 
-### 3. Frontend
+### 3. Run (two terminals)
 ```bash
-cd web && npm install && npm run dev       # http://localhost:5173
+npm run dev:server         # terminal 1 → http://localhost:8787
+npm run dev:web            # terminal 2 → http://localhost:5173
 ```
 
 Open http://localhost:5173 and start chatting.
+
+> **Prefer the terminal?** `npm run cli` gives you a full agent conversation in the
+> shell — handy for a quick smoke test without the UI.
+
+### Verify (typecheck + lint + all tests)
+```bash
+npm run verify             # server + web unit/integration/component
+npm run test:e2e           # Playwright end-to-end (stubbed LLM)
+```
 
 > **Single `.env` for both packages:** `web/vite.config.ts` sets `envDir:'../'` so Vite
 > reads the same root `.env` as the server. Only `VITE_`-prefixed vars reach the browser;
@@ -130,16 +140,21 @@ timeout, double-book, PII-in-logs) are tested as first-class cases. Full strateg
 
 ## Try These (demo script)
 
-1. **Availability:** "What's open tomorrow?"
-2. **Fully booked:** "Any slots today?" → today is seeded full → agent offers other days.
-3. **Book:** "Book the 2pm Thursday. Name Priya Rao, phone 555-0142." → confirms with a ref.
-4. **Missing info:** "Book me the 9am Wednesday" → agent asks for name & phone.
-5. **Double-book / retry:** book a slot, then repeat → idempotent, no duplicate.
-6. **Cancel:** "Cancel appointment appt_xxx" → frees the slot.
+> The seed is deterministic: within the next 7 days, **weekends are closed**, the
+> **1st and 4th weekdays are fully booked**, and the rest have scattered openings. So
+> there's always an open day, a full day, and a closed day to demo — whatever today is.
+
+1. **Availability:** "What's open this week?" → agent lists a day with the earliest time.
+2. **Fully booked:** ask about the earliest weekday it names as full → agent offers other days.
+3. **Book:** "Book the earliest one. Priya Rao, phone 555-0142." → confirms with the date/time.
+4. **Missing info:** "Book me the 9am on <open day>" (no phone) → agent asks for name & phone.
+5. **Double-book / retry:** book a slot, then try the same slot again → idempotent, no duplicate.
+6. **Cancel:** "Cancel appointment appt_xxx" (use a real id from a booking) → frees the slot.
 7. **Cancel unknown:** "Cancel appt_zzz" → agent says it can't find it.
 8. **Out of range:** "Anything two weeks out?" → agent explains the 7-day window.
-9. **Weekend:** "Slots this Saturday?" → closed.
-10. **Resilience (optional):** set a bad `OPENAI_API_KEY` → watch logs fail over to Groq.
+9. **Weekend / closed:** "Slots this Saturday?" → closed.
+10. **Resilience (optional):** set a bad `OPENAI_API_KEY` (keep a valid `GROQ_API_KEY`) →
+    watch the logs fail over to Groq.
 
 ---
 
@@ -161,7 +176,7 @@ Module-level breakdown in [docs/LLD.md](docs/LLD.md).
 
 - **In-memory store / sessions** — behind interfaces; documented one-file swap to Redis/DB.
 - **Bounded tool loop + circuit breaker** — predictable cost, latency, and failure behavior.
-- **Reproducible seed** — today + day 3 fully booked so the "no availability" path always demos.
+- **Reproducible seed** — weekends closed + the 1st & 4th weekdays fully booked, so the "no availability" path always demos.
 - **Low temperature** — predictable tool use.
 - **PII discipline** — patient name/phone never logged; keys server-side only.
 

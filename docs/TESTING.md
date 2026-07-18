@@ -30,7 +30,7 @@ autocannon (smoke load). All wired to `npm test` and a CI-friendly `npm run test
 
 | Target | Cases |
 |---|---|
-| `store.seed(today)` | Correct # of days (7), slots/day (16), today+day3 fully booked, weekends closed, deterministic booked pattern. |
+| `store.seed(today)` | Correct # of days (7), slots/day (16), 1st & 4th weekdays fully booked, weekends closed, deterministic scattered pattern. |
 | `store.book()` | Books an open slot; **rejects a second book of the same slot** (double-book guard); flips `isBooked`. |
 | `store.cancel()` | Frees the slot; removes the appointment; unknown id → not found. |
 | `slots.getAvailableSlots()` | `BAD_DATE`, `OUT_OF_RANGE` (past / >7d), `NO_SLOTS` (full vs closed), success shape. |

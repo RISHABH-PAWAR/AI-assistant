@@ -124,10 +124,13 @@ class Store {
 ### Seeding rules
 - Generate slots for **today .. today+6** (7 days).
 - Business hours **09:00–16:30**, every **30 min** → 16 slots/day.
-- Deterministic "fully booked" pattern so the demo is reproducible:
-  - **Day 0 (today)** and **day 3** are **fully booked** (every slot `isBooked = true`).
-  - **Weekend days** (if any fall in the window) get **no slots** (closed).
-  - Other days: mark a scattered ~30% booked so lists look realistic.
+- Deterministic pattern so the demo is reproducible. Every 7-day window contains
+  exactly 5 weekdays + 2 weekend days, so we key off weekday order:
+  - **Weekends** get **no slots** (closed).
+  - Of the 5 weekdays, the **1st and 4th (in order)** are **fully booked** — this
+    guarantees a demonstrable "no availability" day regardless of what day it is today.
+  - The remaining weekdays get a fixed **~31% scattered-booked** pattern (`idx % 3 === 1`)
+    so lists look realistic.
 - Seeding is **pure w.r.t. an injected `today`** so behavior is testable and stable.
 
 ### Atomicity / double-book guard

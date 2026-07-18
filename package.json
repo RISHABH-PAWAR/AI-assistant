@@ -1,0 +1,22 @@
+{
+  "name": "lakeside-dental-agent",
+  "version": "1.0.0",
+  "private": true,
+  "description": "AI booking agent for Lakeside Dental — Node/TS backend (OpenAI + Groq failover) and a premium React chat UI.",
+  "scripts": {
+    "install:all": "npm --prefix server install && npm --prefix web install",
+    "dev:server": "npm --prefix server run dev",
+    "dev:web": "npm --prefix web run dev",
+    "cli": "npm --prefix server run cli",
+    "typecheck": "npm --prefix server run typecheck && npm --prefix web run typecheck",
+    "lint": "npm --prefix server run lint && npm --prefix web run lint",
+    "test:server": "npm --prefix server run test:ci",
+    "test:web": "npm --prefix web run test:ci",
+    "test:e2e": "npm --prefix web run test:e2e",
+    "test": "npm run test:server && npm run test:web",
+    "verify": "npm run typecheck && npm run lint && npm run test"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
