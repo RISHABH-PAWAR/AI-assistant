@@ -50,7 +50,7 @@ describe("logger emission", () => {
     logger.error("e");
     expect(console.log).toHaveBeenCalledTimes(2); // debug + info
     expect(console.error).toHaveBeenCalledTimes(2); // warn + error
-    const infoLine = JSON.parse((console.log as unknown as ReturnType<typeof vi.fn>).mock.calls[1][0]);
+    const infoLine = JSON.parse(vi.mocked(console.log).mock.calls[1]![0] as string);
     expect(infoLine).toMatchObject({ level: "info", msg: "i", a: 1 });
   });
 
@@ -58,7 +58,7 @@ describe("logger emission", () => {
     const { logger } = await freshLoggerAtDebug();
     const child = logger.child("cid-9");
     child.info("turn", { phone: "555-0142", provider: "openai" });
-    const line = JSON.parse((console.log as unknown as ReturnType<typeof vi.fn>).mock.calls.at(-1)![0]);
+    const line = JSON.parse(vi.mocked(console.log).mock.calls.at(-1)![0] as string);
     expect(line).toMatchObject({ cid: "cid-9", provider: "openai", phone: "[redacted]" });
   });
 
