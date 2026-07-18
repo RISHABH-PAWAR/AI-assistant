@@ -1,0 +1,73 @@
+{
+  "$schema": "https://design-tokens.org/schema.json",
+  "meta": {
+    "name": "Warm Clinical",
+    "description": "Design tokens for the Lakeside Dental agent, derived from the Pythagoras AI aesthetic.",
+    "version": "1.0.0"
+  },
+  "color": {
+    "brand": {
+      "coral": "#F0553D",
+      "coralHover": "#DB4832",
+      "coralSoft": "#FCEAE4",
+      "pink": "#D65C93",
+      "purple": "#8A6FE8",
+      "gradient": "linear-gradient(90deg,#F0553D 0%,#D65C93 55%,#8A6FE8 100%)"
+    },
+    "bg": {
+      "base": "#FDF7F3",
+      "glow": "radial-gradient(1200px 600px at 50% -10%, #FBE4DA 0%, #FDF7F3 60%)"
+    },
+    "surface": {
+      "default": "#FFFFFF",
+      "subtle": "#FBF4EF",
+      "border": "#EFE6DF"
+    },
+    "text": {
+      "ink": "#1B1A26",
+      "slate": "#5E5D6B",
+      "muted": "#95949F",
+      "onAccent": "#FFFFFF"
+    },
+    "semantic": {
+      "success": "#3FA57A",
+      "danger": "#C24A38",
+      "dangerSoft": "#FBE7E2"
+    }
+  },
+  "font": {
+    "family": {
+      "display": "'General Sans', Inter, system-ui, sans-serif",
+      "body": "Inter, system-ui, sans-serif"
+    },
+    "weight": { "regular": 400, "medium": 500, "semibold": 600, "bold": 700 },
+    "size": {
+      "display": "3.25rem",
+      "h1": "2rem",
+      "h2": "1.5rem",
+      "body": "1rem",
+      "small": "0.875rem",
+      "caption": "0.8125rem"
+    },
+    "lineHeight": { "tight": 1.05, "heading": 1.2, "body": 1.6 },
+    "tracking": { "display": "-0.02em", "normal": "0" }
+  },
+  "radius": { "xs": "8px", "sm": "12px", "md": "16px", "lg": "20px", "pill": "999px" },
+  "space": {
+    "1": "4px", "2": "8px", "3": "12px", "4": "16px", "5": "20px",
+    "6": "24px", "8": "32px", "10": "40px", "12": "48px", "16": "64px"
+  },
+  "shadow": {
+    "sm": "0 1px 2px rgba(27,26,38,.04)",
+    "md": "0 4px 16px rgba(27,26,38,.06)",
+    "glow": "0 8px 30px rgba(240,85,61,.14)"
+  },
+  "motion": {
+    "ease": {
+      "standard": "cubic-bezier(.4,0,.2,1)",
+      "outSoft": "cubic-bezier(.16,1,.3,1)",
+      "spring": "cubic-bezier(.34,1.3,.64,1)"
+    },
+    "duration": { "fast": "160ms", "base": "240ms", "slow": "420ms" }
+  }
+}

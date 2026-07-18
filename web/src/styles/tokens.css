@@ -1,0 +1,93 @@
+/* ============================================================
+   Warm Clinical — design tokens (CSS custom properties)
+   Source of truth mirrored from /design-tokens.json.
+   Components must reference var(--…) — never hard-coded hex.
+   ============================================================ */
+
+:root {
+  /* ---- Brand / accent ---- */
+  --brand-coral: #F0553D;
+  --brand-coral-hover: #DB4832;
+  --brand-coral-soft: #FCEAE4;
+  --brand-pink: #D65C93;
+  --brand-purple: #8A6FE8;
+  --brand-gradient: linear-gradient(90deg, #F0553D 0%, #D65C93 55%, #8A6FE8 100%);
+
+  /* ---- Background / surfaces ---- */
+  --bg-base: #FDF7F3;
+  --bg-glow: radial-gradient(1200px 600px at 50% -10%, #FBE4DA 0%, #FDF7F3 60%);
+  --surface: #FFFFFF;
+  --surface-subtle: #FBF4EF;
+  --border: #EFE6DF;
+
+  /* ---- Text ---- */
+  --text-ink: #1B1A26;
+  --text-slate: #5E5D6B;
+  --text-muted: #95949F;
+  --text-on-accent: #FFFFFF;
+
+  /* ---- Semantic (muted) ---- */
+  --success: #3FA57A;
+  --danger: #C24A38;
+  --danger-soft: #FBE7E2;
+
+  /* ---- Typography ---- */
+  --font-display: 'General Sans', Inter, system-ui, sans-serif;
+  --font-body: Inter, system-ui, sans-serif;
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+
+  /* ---- Radius ---- */
+  --r-xs: 8px;
+  --r-sm: 12px;
+  --r-md: 16px;
+  --r-lg: 20px;
+  --r-pill: 999px;
+
+  /* ---- Spacing (4px base) ---- */
+  --sp-1: 4px;  --sp-2: 8px;  --sp-3: 12px; --sp-4: 16px; --sp-5: 20px;
+  --sp-6: 24px; --sp-8: 32px; --sp-10: 40px; --sp-12: 48px; --sp-16: 64px;
+
+  /* ---- Elevation ---- */
+  --shadow-sm: 0 1px 2px rgba(27, 26, 38, .04);
+  --shadow-md: 0 4px 16px rgba(27, 26, 38, .06);
+  --shadow-glow: 0 8px 30px rgba(240, 85, 61, .14);
+
+  /* ---- Motion ---- */
+  --ease-standard: cubic-bezier(.4, 0, .2, 1);
+  --ease-out-soft: cubic-bezier(.16, 1, .3, 1);
+  --ease-spring: cubic-bezier(.34, 1.3, .64, 1);
+  --dur-fast: 160ms;
+  --dur-base: 240ms;
+  --dur-slow: 420ms;
+}
+
+/* ---- Named animations ---- */
+@keyframes msg-enter {
+  from { opacity: 0; transform: translateY(8px) scale(.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes typing-pulse {
+  0%, 60%, 100% { opacity: .25; }
+  30%           { opacity: 1; }
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ---- Reduced motion: required, not optional ---- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
