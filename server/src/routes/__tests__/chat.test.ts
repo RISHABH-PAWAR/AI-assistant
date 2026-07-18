@@ -142,4 +142,25 @@ describe("POST /api/chat", () => {
     const res = await request(app).get("/health").set("Origin", "http://localhost:5173");
     expect(res.headers["access-control-allow-origin"]).toBe("http://localhost:5173");
   });
+
+  it("keeps sessions isolated under concurrent load (no state bleed)", async () => {
+    // Echo the caller's own last user message so any cross-request bleed shows up.
+    const runAgent: AgentRunner = async ({ history }) => {
+      const lastUser = [...history].reverse().find((m) => m.role === "user");
+      // Simulate async work so requests genuinely overlap.
+      await new Promise((r) => setTimeout(r, 5));
+      return { reply: (lastUser?.content as string) ?? "", toolTrace: [] };
+    };
+    const { app } = buildApp({ runAgent });
+
+    const results = await Promise.all(
+      Array.from({ length: 20 }, (_, i) =>
+        request(app).post("/api/chat").send({ sessionId: `sess-${i}`, message: `msg-${i}` }),
+      ),
+    );
+    results.forEach((res, i) => {
+      expect(res.status).toBe(200);
+      expect(res.body.reply).toBe(`msg-${i}`);
+    });
+  });
 });
