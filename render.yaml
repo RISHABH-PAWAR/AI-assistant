@@ -1,0 +1,31 @@
+# Render Blueprint for the backend API (server/).
+# Render dashboard → New → Blueprint → pick this repo → it reads this file.
+# Set OPENAI_API_KEY (and optionally GROQ_API_KEY) as secrets, and WEB_ORIGIN
+# to your Vercel URL after the frontend is deployed. See DEPLOY.md.
+services:
+  - type: web
+    name: lakeside-dental-api
+    runtime: node
+    rootDir: server
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: OPENAI_API_KEY
+        sync: false # set in the Render dashboard (secret)
+      - key: GROQ_API_KEY
+        sync: false # optional fallback (secret)
+      - key: OPENAI_MODEL
+        value: gpt-4o-mini
+      - key: GROQ_MODEL
+        value: llama-3.3-70b-versatile
+      - key: WEB_ORIGIN
+        sync: false # set to your Vercel frontend URL, e.g. https://your-app.vercel.app
+      - key: NODE_ENV
+        value: production
+      - key: LOG_LEVEL
+        value: info
+      - key: SEED_MODE
+        value: default
