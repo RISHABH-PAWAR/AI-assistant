@@ -14,7 +14,7 @@ import { isLlmConfigured, makeFailoverProvider } from "./llm/factory.js";
  * failover provider, and HTTP router into the Express app.
  */
 function main(): void {
-  const store = new Store(); // real clock; seeds the 7-day window on boot
+  const store = new Store(() => new Date(), config.seedMode); // seeds per SEED_MODE on boot
   const sessions = new InMemorySessionStore();
   const runAgent = createAgentRunner({ store, maxIters: config.maxToolIters });
 
@@ -32,6 +32,7 @@ function main(): void {
     logger.info("server_listening", {
       port: config.port,
       url: `http://localhost:${config.port}`,
+      seedMode: config.seedMode,
       windowStart: store.windowStart,
       windowEnd: store.windowEnd,
     });

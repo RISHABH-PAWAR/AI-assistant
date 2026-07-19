@@ -37,6 +37,7 @@ const EnvSchema = z
     RATE_LIMIT_PER_MIN: z.coerce.number().int().positive().default(60),
     LOG_LEVEL: z.enum(["debug", "info", "warn", "error"]).default("info"),
     NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
+    SEED_MODE: z.enum(["default", "open", "empty"]).default("default"),
   })
   .refine((e) => e.OPENAI_API_KEY || e.GROQ_API_KEY, {
     message: "At least one LLM provider key is required (OPENAI_API_KEY or GROQ_API_KEY).",
@@ -66,6 +67,7 @@ export const config = {
   webOrigin: env.WEB_ORIGIN,
   rateLimitPerMin: env.RATE_LIMIT_PER_MIN,
   logLevel: env.LOG_LEVEL,
+  seedMode: env.SEED_MODE,
   maxToolIters: env.MAX_TOOL_ITERS,
   llm: {
     timeoutMs: env.LLM_TIMEOUT_MS,

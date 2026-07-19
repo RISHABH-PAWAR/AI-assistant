@@ -64,6 +64,28 @@ describe("Store.seed", () => {
   });
 });
 
+describe("Store.seed — seed modes", () => {
+  it('"open" mode: every weekday fully available, weekends still closed', () => {
+    const s = new Store(clock, "open");
+    for (const weekday of ["2026-07-13", "2026-07-14", "2026-07-16", "2026-07-17"]) {
+      expect(s.getSlotsByDate(weekday)).toHaveLength(16);
+      expect(s.getOpenSlotsByDate(weekday)).toHaveLength(16); // nothing pre-booked
+    }
+    expect(s.getSlotsByDate("2026-07-18")).toHaveLength(0); // Saturday closed
+    expect(s.getSlotsByDate("2026-07-19")).toHaveLength(0); // Sunday closed
+  });
+
+  it('"empty" mode: no slots on any day, but the window is still bounded', () => {
+    const s = new Store(clock, "empty");
+    for (const day of s.seededDays) {
+      expect(s.getSlotsByDate(day)).toHaveLength(0);
+    }
+    expect(s.seededDays).toHaveLength(WINDOW_DAYS);
+    expect(s.windowStart).toBe("2026-07-13");
+    expect(s.windowEnd).toBe("2026-07-19");
+  });
+});
+
 describe("Store booking mechanics", () => {
   it("books an open slot and indexes it by slot", () => {
     const s = freshStore();

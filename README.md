@@ -118,7 +118,32 @@ See [.env.example](.env.example). Summary:
 | `MAX_TOOL_ITERS` | — | `5` | Safety bound on the tool loop. |
 | `PORT` / `WEB_ORIGIN` | — | `8787` / `:5173` | Server port / CORS origin. |
 | `RATE_LIMIT_PER_MIN` | — | `60` | Per-IP request cap. |
+| `SEED_MODE` | — | `default` | Calendar seeding: `default` \| `open` \| `empty` (see below). |
 | `VITE_API_BASE` | — | `http://localhost:8787` | Frontend → backend base URL. |
+
+### Testing without seed data
+
+The in-memory calendar is populated on boot per `SEED_MODE`:
+
+| `SEED_MODE` | Result |
+|---|---|
+| `default` | Demo mix — weekends closed, 1st & 4th weekdays fully booked, rest scattered. |
+| `open` | **Clean calendar** — every weekday fully available, nothing pre-booked (weekends still closed). Best for predictable manual testing. |
+| `empty` | **No slots at all** — every day returns "no availability". |
+
+Set it in `.env` (`SEED_MODE=open`) and restart the backend, or override per run:
+
+```bash
+# Windows Git Bash / macOS / Linux
+SEED_MODE=open  npm run dev:server     # clean, fully-open calendar
+SEED_MODE=empty npm run dev:server     # nothing available anywhere
+```
+```powershell
+# PowerShell
+$env:SEED_MODE="open"; npm run dev:server
+```
+
+The store resets to the chosen mode every time the backend restarts.
 
 ---
 

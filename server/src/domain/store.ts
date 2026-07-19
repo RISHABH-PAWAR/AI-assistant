@@ -33,6 +33,15 @@ export type Clock = () => Date;
  * through this class (repository seam) so a Redis/DB impl can replace it without
  * touching the domain handlers (ADR-003).
  */
+/**
+ * How the 7-day window is populated on boot:
+ *  - "default" — demo mix: weekends closed, 1st & 4th weekdays full, ~31% scattered.
+ *  - "open"    — clean calendar: every weekday fully available, nothing pre-booked
+ *                (weekends still closed). Ideal for predictable manual testing.
+ *  - "empty"   — no slots at all on any day (nothing to book).
+ */
+export type SeedMode = "default" | "open" | "empty";
+
 export class Store {
   private slots = new Map<string, Slot>();
   private appointments = new Map<string, Appointment>();
@@ -40,18 +49,16 @@ export class Store {
   private days: string[] = [];
   private today = "";
 
-  constructor(private readonly clock: Clock = () => new Date()) {
+  constructor(
+    private readonly clock: Clock = () => new Date(),
+    private readonly seedMode: SeedMode = "default",
+  ) {
     this.seed();
   }
 
   /**
-   * (Re)build the 7-day window from the injected clock.
-   *
-   * Rules (deterministic, demo-friendly):
-   *  - Weekends are closed (no slots) — every 7-day window has exactly 2.
-   *  - Of the 5 weekdays, the 1st and 4th (in order) are fully booked, so the
-   *    "no availability" path always demos regardless of what day it is today.
-   *  - Remaining weekdays get a fixed ~31% scattered-booked pattern.
+   * (Re)build the 7-day window from the injected clock, per `seedMode`.
+   * Weekends are always closed (a clinic business rule) in every mode.
    */
   seed(): void {
     this.slots.clear();
@@ -67,11 +74,15 @@ export class Store {
     for (let i = 0; i < WINDOW_DAYS; i++) {
       const date = addDays(today, i);
       this.days.push(date);
-      if (isWeekend(date)) continue; // closed
+      if (isWeekend(date)) continue; // closed in every mode
+      if (this.seedMode === "empty") {
+        weekdayOrdinal += 1;
+        continue; // no slots generated
+      }
 
-      const fullyBooked = weekdayOrdinal === 0 || weekdayOrdinal === 3;
+      const fullyBooked = this.seedMode === "default" && (weekdayOrdinal === 0 || weekdayOrdinal === 3);
       times.forEach((time, idx) => {
-        const scattered = idx % 3 === 1;
+        const scattered = this.seedMode === "default" && idx % 3 === 1;
         const isBooked = fullyBooked || scattered;
         const id = `${date}T${time}`;
         this.slots.set(id, { id, date, time, isBooked });
